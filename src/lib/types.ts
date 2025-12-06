@@ -38,11 +38,11 @@ export class EventType {
     static MISS_ARTIFACT = (launch: Event) => launch.data = { 'scored': 'false', 'type': 'miss' };
 
     static AUTONOMOUS = (start_time: number) => new EventPeriod(start_time, start_time + 30, "autonomous");
-    static TELEOP = (start_time: number) => new EventPeriod(start_time, start_time + 100, "teleop");
+    static TELEOP = (start_time: number) => new EventPeriod(start_time, start_time + 120, "teleop");
     static ENDGAME = (start_time: number) => new EventPeriod(start_time, start_time + 20, "endgame");
 
     static DEFENSE = (start_time: number, end_time: number) => new EventPeriod(start_time, end_time, "defense");
     
     // staying in double base takes the rest of the match
-    static DOUBLE_BASE = (start_time: number, match_time: number) => new EventPeriod(start_time, 150 - match_time, "double_base");
+    static DOUBLE_BASE = (start_time: number, time_left: number) => new EventPeriod(start_time, start_time + time_left, "double_base");
 }
