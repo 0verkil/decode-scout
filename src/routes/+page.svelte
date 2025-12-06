@@ -157,7 +157,7 @@
   <main class="h-screen w-full bg-black text-white font-mono flex flex-col overflow-hidden select-none touch-manipulation">
     
     <!-- TOP BAR: Status & Score -->
-    <div class="hidden md:h-16 shrink-0 bg-zinc-900 border-b border-pink-900 md:flex items-center justify-between px-4 z-20 shadow-xl">
+    <div class="h-16 shrink-0 bg-zinc-900 border-b border-pink-900 flex items-center justify-between px-4 z-20 shadow-xl">
       
       <!-- Left: Score Gauge (Points) -->
       <div class="flex flex-col">
