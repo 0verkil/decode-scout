@@ -15,8 +15,8 @@ export class EventPeriod {
     end_event: Event;
 
     constructor(start_timestamp: number, end_timestamp: number, period: string, data: Record<string, string> = {}) {
-        this.start_event = new Event(start_timestamp, period, data);
-        this.end_event = new Event(end_timestamp, period, data);
+        this.start_event = new Event(start_timestamp, period + "_start", data);
+        this.end_event = new Event(end_timestamp, period + "_end", data);
     }
 
     getEvents(): Event[] {
@@ -27,15 +27,15 @@ export class EventPeriod {
 export class EventType {
     static INTAKE_ARTIFACT = (timestamp: number) => new Event(timestamp, "intake_artifact");
     static UNINTAKE_ARTIFACT = (timestamp: number) => new Event(timestamp, "unintake_artifact");
-    static LAUNCH_ARTIFACT = (timestamp: number) => new Event(timestamp, "launch_artifact");
+    static LAUNCH_ARTIFACT = (timestamp: number) => new Event(timestamp, "launch_artifact", { 'scored': 'unknown', 'type': 'unknown' });
 
     static OPEN_GATE = (timestamp: number) => new Event(timestamp, "open_gate");
 
-    static SCORE_ARTIFACT = (timestamp: number) => new Event(timestamp, "score_artifact", { 'type': 'unknown' });
-    static CLASSIFY_ARTIFACT = (timestamp: number) => new Event(timestamp, "score_artifact", { 'type': 'classify' });
-    static OVERFLOW_ARTIFACT = (timestamp: number) => new Event(timestamp, "score_artifact", { 'type': 'overflow' });
+    static SCORE_ARTIFACT = (launch: Event) => launch.data = { 'scored': 'true', 'type': 'unknown' };
+    static CLASSIFY_ARTIFACT = (launch: Event) => launch.data = { 'scored': 'true', 'type': 'classified' };
+    static OVERFLOW_ARTIFACT = (launch: Event) => launch.data = { 'scored': 'true', 'type': 'overflow' };
 
-    static MISS_ARTIFACT = (timestamp: number) => new Event(timestamp, "miss_artifact");
+    static MISS_ARTIFACT = (launch: Event) => launch.data = { 'scored': 'false', 'type': 'miss' };
 
     static AUTONOMOUS = (start_time: number) => new EventPeriod(start_time, start_time + 30, "autonomous");
     static TELEOP = (start_time: number) => new EventPeriod(start_time, start_time + 100, "teleop");
