@@ -12,6 +12,7 @@
   let gameState: "auto" | "dc" | "eg" | null = null;
 
   let shotsInAir: Event[] = [];
+  $: shotsInAir.sort((a, b) => a.timestamp - b.timestamp);
 
   let artifactsHeld = 0;
 
@@ -161,18 +162,61 @@
       </button>
       {#if gameState == "auto"}
         <button class="btn btn-success btn-wide btn-lg" on:click={startTeleOp}>
-            Start TeleOp
+          Start TeleOp
         </button>
       {/if}
     {/if}
   </div>
 
   <div class="flex mt-4">
-    <ul>
-        {#each shotsInAir as shot}
-            <li>shot {shot.timestamp}</li>
-        {/each}
-    </ul>
+    {#each shotsInAir as shot}
+      <div>
+        <button
+          class="btn btn-primary h-32 text-2xl"
+          on:click={() => {
+            EventType.SCORE_ARTIFACT(shot);
+            shotsInAir.splice(shotsInAir.indexOf(shot), 1);
+            shotsInAir = shotsInAir; // reassign for svelte update trigger
+            events = events;
+          }}
+        >
+          Scored
+        </button>
+        <button
+          class="btn btn-primary h-32 text-2xl"
+          on:click={() => {
+            EventType.CLASSIFY_ARTIFACT(shot);
+            shotsInAir.splice(shotsInAir.indexOf(shot), 1);
+            shotsInAir = shotsInAir; // reassign for svelte update trigger
+            events = events;
+          }}
+        >
+          Classified
+        </button>
+        <button
+          class="btn btn-primary h-32 text-2xl"
+          on:click={() => {
+            EventType.OVERFLOW_ARTIFACT(shot);
+            shotsInAir.splice(shotsInAir.indexOf(shot), 1);
+            shotsInAir = shotsInAir; // reassign for svelte update trigger
+            events = events;
+          }}
+        >
+          Overflow
+        </button>
+        <button
+          class="btn btn-primary h-32 text-2xl"
+          on:click={() => {
+            EventType.MISS_ARTIFACT(shot);
+            shotsInAir.splice(shotsInAir.indexOf(shot), 1);
+            shotsInAir = shotsInAir; // reassign for svelte update trigger
+            events = events;
+          }}
+        >
+          Missed
+        </button>
+      </div>
+    {/each}
   </div>
 
   <!-- Event Log Table -->
