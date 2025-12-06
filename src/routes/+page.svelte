@@ -157,7 +157,7 @@
   <main class="h-screen w-full bg-black text-white font-mono flex flex-col overflow-hidden select-none touch-manipulation">
     
     <!-- TOP BAR: Status & Score -->
-    <div class="h-16 shrink-0 bg-zinc-900 border-b border-pink-900 flex items-center justify-between px-4 z-20 shadow-xl">
+    <div class="hidden md:h-16 shrink-0 bg-zinc-900 border-b border-pink-900 md:flex items-center justify-between px-4 z-20 shadow-xl">
       
       <!-- Left: Score Gauge (Points) -->
       <div class="flex flex-col">
@@ -273,7 +273,7 @@
       <div class="flex flex-col h-full bg-black">
           
           <!-- TOP SPLIT: Control Panel -->
-          <div class="h-1/3 min-h-60 border-b border-zinc-800 p-3 grid grid-cols-2 gap-3 bg-zinc-900/50">
+          <div class="h-1/3 min-h-40 border-b border-zinc-800 p-3 grid grid-cols-2 gap-3 bg-zinc-900/50">
               
               <!-- Global Match Controls (Small, at top of split) -->
               <div class="col-span-2 flex gap-2 mb-1">
