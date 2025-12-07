@@ -1,8 +1,4 @@
-import { deserializeFromJson } from "./serializer";
-import { getArtifactStats, getMeanTimeBetweenEventTypes } from "./stats";
-
-// place files you want to import through the `$lib` alias in this folder.
-const m = [
+[
     {
         "scored": "false",
         "type": "miss"
@@ -809,13 +805,3 @@ const m = [
         "type": "classified"
     }
 ]
-
-export function test() {
-    const events = deserializeFromJson(m);
-    events.sort((a, b) => a.timestamp - b.timestamp);
-    console.log(events)
-    console.log("launch to launch", getMeanTimeBetweenEventTypes(events, "launch_artifact", "launch_artifact", ["intake_artifact", "teleop_start"]))
-    console.log("launch to intake", getMeanTimeBetweenEventTypes(events, "launch_artifact", "intake_artifact", ["teleop_start"]))
-    console.log("intake to intake", getMeanTimeBetweenEventTypes(events, "intake_artifact", "intake_artifact", ["launch_artifact", "teleop_start"]))
-    console.log("intake to launch", getMeanTimeBetweenEventTypes(events, "intake_artifact", "launch_artifact", ["teleop_start"]))
-}

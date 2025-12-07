@@ -1,9 +1,13 @@
 <script lang="ts">
     import { onDestroy } from "svelte";
     import { Event, EventPeriod, EventType } from "$lib/types"; 
+  import SaveModal from "$lib/components/SaveModal.svelte";
+  import { getArtifactStats, getMeanTimeBetweenEventTypes } from "$lib/stats";
   
     // --- State ---
     let events: any[] = [];
+    $: events.sort((a, b) => a.timestamp - b.timestamp);
+    let savingMatch: boolean = false;
     
     // Match Status
     let isMatchRunning = false;
@@ -134,7 +138,7 @@
       }
   
       if (eventFn) {
-          logEvent(eventFn(shot));
+          eventFn(shot)
       }
   
       // Remove from air
@@ -142,7 +146,7 @@
     }
   
     function saveData() {
-      console.log("Match saved!", events);
+     savingMatch = true;
     }
   
     function getTimestamp() {
@@ -155,6 +159,10 @@
   </script>
   
   <main class="h-screen w-full bg-black text-white font-mono flex flex-col overflow-hidden select-none touch-manipulation">
+
+    {#if savingMatch}
+        <SaveModal {events} closeFn={() => savingMatch = false}></SaveModal>
+    {/if}
     
     <!-- TOP BAR: Status & Score -->
     <div class="h-16 shrink-0 bg-zinc-900 border-b border-pink-900 flex items-center justify-between px-4 z-20 shadow-xl">
