@@ -1,5 +1,5 @@
 import { sveltekit } from '@sveltejs/kit/vite';
-import { defineConfig } from 'vite';
+import { defineConfig, searchForWorkspaceRoot } from 'vite';
 import tailwindcss from '@tailwindcss/vite';
 
 
@@ -8,5 +8,5 @@ export default defineConfig({
 		sveltekit(),
 		tailwindcss()
 	],
-	base:"/decode-scout/"
+	base:"/decode-scout/",
 });
