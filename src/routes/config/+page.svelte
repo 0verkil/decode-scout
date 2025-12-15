@@ -1,13 +1,24 @@
 <script lang="ts">
+  import { onMount } from "svelte"; // Import onMount
   import { BASE_URL } from "$lib";
   import ToastHandler from "$lib/components/ToastHandler.svelte";
   import { showToast } from "$lib/store/toast";
 
-  let teamNumber: number = parseInt(localStorage.getItem("teamNumber") || '0', 10);
-  let year: number = parseInt(localStorage.getItem("year") || '2026', 10);
-  let eventCode: string = localStorage.getItem('eventCode') || 'unknown';
+  // Initialize state with default values, since localStorage is not available yet
+  let teamNumber: number = 0;
+  let year: number = 2026;
+  let eventCode: string = 'unknown';
+
+  // *** NEW: Load data only after component mounts (in the browser) ***
+  onMount(() => {
+    // These lines will now only run in the browser where localStorage exists
+    teamNumber = parseInt(localStorage.getItem("teamNumber") || '0', 10);
+    year = parseInt(localStorage.getItem("year") || '2026', 10);
+    eventCode = localStorage.getItem('eventCode') || 'unknown';
+  });
 
   function saveData() {
+      // This function already runs correctly when triggered by a button click (after mount)
       localStorage.setItem("teamNumber", "" + teamNumber);
       localStorage.setItem("eventCode", "" + eventCode);
       localStorage.setItem("year", "" + year);
