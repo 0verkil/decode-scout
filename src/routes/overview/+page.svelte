@@ -1,5 +1,6 @@
 <script lang="ts">
   import DataModal from "$lib/components/DataModal.svelte";
+  import { deserializeFromJson } from "$lib/serializer";
   import { getMatchStats } from "$lib/stats";
     import { onMount } from "svelte";
     // IMPORT THE NEW MODAL COMPONENT
@@ -32,12 +33,12 @@
     
     // --- 2. RAW DATA INTERFACE (For parsing local storage) ---
     interface RawStatsPayload {
-        'launch to launch': number | string;
-        'launch to intake': number | string;
-        'intake to intake': number | string;
-        'intake to launch': number | string;
-        'artifact stats': (number | string)[]; 
-        'json': any[]; 
+        'launch_to_launch_mean_time': number | string;
+        'launch_to_intake_mean_time': number | string;
+        'intake_to_intake_mean_time': number | string;
+        'intake_to_launch_mean_time': number | string;
+        'artifact_stats': (number | string)[]; 
+        'raw_events': any[]; 
         [key: string]: any; 
     }
     interface RawEventData {
@@ -74,6 +75,8 @@
                     try {
                         const rawTeamStats: RawEventData = JSON.parse(dataString);
                         const cleanedTeamStats: EventData = {};
+
+                        console.log(rawTeamStats);
                         
                         for (const eventCode in rawTeamStats) {
                             const rawMatchData = rawTeamStats[eventCode];
@@ -83,17 +86,17 @@
                                 const rawPayload: RawStatsPayload = rawMatchData[matchNumber];
                                 
                                 const cleanedPayload: StatsPayload = {
-                                    launch_to_launch_mean_time: parseFloat(rawPayload['launch to launch'] as any) || 0,
-                                    launch_to_intake_mean_time: parseFloat(rawPayload['launch to intake'] as any) || 0,
-                                    intake_to_intake_mean_time: parseFloat(rawPayload['intake to intake'] as any) || 0,
-                                    intake_to_launch_mean_time: parseFloat(rawPayload['intake to launch'] as any) || 0,
+                                    launch_to_launch_mean_time: parseFloat(rawPayload['launch_to_launch_mean_time'] as any) || 0,
+                                    launch_to_intake_mean_time: parseFloat(rawPayload['launch_to_intake_mean_time'] as any) || 0,
+                                    intake_to_intake_mean_time: parseFloat(rawPayload['intake_to_intake_mean_time'] as any) || 0,
+                                    intake_to_launch_mean_time: parseFloat(rawPayload['intake_to_launch_mean_time'] as any) || 0,
                                     
-                                    artifact_stats: (Array.isArray(rawPayload['artifact stats']) 
-                                        ? (rawPayload['artifact stats'] as (number|string)[]).map(val => parseFloat(val as any) || 0)
+                                    artifact_stats: (Array.isArray(rawPayload['artifact_stats']) 
+                                        ? (rawPayload['artifact_stats'] as (number|string)[]).map(val => parseFloat(val as any) || 0)
                                         : [0, 0, 0, 0]
                                     ) as ArtifactStatsTuple,
                                     
-                                    raw_events: rawPayload['json'] || [],
+                                    raw_events: rawPayload['raw_events'] || [],
                                 };
 
                                 cleanedMatchData[matchNumber] = cleanedPayload;
@@ -222,61 +225,42 @@
     }
 
     // --- 8. RECOMPUTATION LOGIC ---
+
     function recomputeAll() {
-        let recomputeCount = 0;
+        // 1. Map over the existing data to create the updated state
+        const updatedStats = { ...overallStats };
 
-        // Create a deep copy to maintain reactivity properly
-        const newStats = { ...overallStats };
+        Object.entries(updatedStats).forEach(([teamNum, events]) => {
+            Object.entries(events).forEach(([eventCode, matches]) => {
+                Object.entries(matches).forEach(([matchNum, payload]) => {
+                    
+                    if (payload.raw_events?.length) {
+                        payload.raw_events = deserializeFromJson(payload.raw_events); // filter out invalid events
+                        // 2. Use your engine to recalculate
+                        const fresh = getMatchStats(payload.raw_events);
 
-        for (const teamNum in newStats) {
-            for (const eventCode in newStats[teamNum]) {
-                for (const matchNum in newStats[teamNum][eventCode]) {
-                    const match = newStats[teamNum][eventCode][matchNum];
-
-                    if (match.raw_events && match.raw_events.length > 0) {
-                        // 1. Run your provided computation function
-                        const updatedRaw = getMatchStats(match.raw_events);
-
-                        // 2. Map the results back to your internal interface (StatsPayload)
-                        newStats[teamNum][eventCode][matchNum] = {
-                            launch_to_launch_mean_time: parseFloat(updatedRaw['launch to launch'] as any) || 0,
-                            launch_to_intake_mean_time: parseFloat(updatedRaw['launch to intake'] as any) || 0,
-                            intake_to_intake_mean_time: parseFloat(updatedRaw['intake to intake'] as any) || 0,
-                            intake_to_launch_mean_time: parseFloat(updatedRaw['intake to launch'] as any) || 0,
-                            artifact_stats: updatedRaw['artifact stats'] as ArtifactStatsTuple,
-                            raw_events: match.raw_events
+                        // 3. Update the local state object
+                        updatedStats[teamNum][eventCode][matchNum] = {
+                            ...payload, // Keep raw_events
+                            launch_to_launch_mean_time: Number(fresh["launch_to_launch_mean_time"]),
+                            launch_to_intake_mean_time: Number(fresh["launch_to_intake_mean_time"]),
+                            intake_to_intake_mean_time: Number(fresh["intake_to_intake_mean_time"]),
+                            intake_to_launch_mean_time: Number(fresh["intake_to_launch_mean_time"]),
+                            artifact_stats: fresh["artifact_stats"] as ArtifactStatsTuple,
                         };
-                        recomputeCount++;
                     }
-                }
-            }
-            
-            // 3. Sync this specific team back to LocalStorage
-            saveTeamToLocalStorage(teamNum, newStats[teamNum]);
-        }
+                });
+            });
 
-        overallStats = newStats;
-        alert(`Recomputed ${recomputeCount} matches using the latest logic.`);
-    }
+            // 4. Sync the team back to localStorage immediately
+            // We recreate the "Raw" structure your loader expects
+            const rawToStore = JSON.parse(JSON.stringify(updatedStats[teamNum])); 
+            // Note: You may need a small helper here to map camelCase back to "space keys" 
+            // if your loadAllStats is strict about naming.
+            localStorage.setItem(teamNum, JSON.stringify(updatedStats[teamNum]));
+        });
 
-    function saveTeamToLocalStorage(teamNumber: string, teamData: EventData) {
-        const storageFormat: RawEventData = {};
-
-        for (const eventCode in teamData) {
-            storageFormat[eventCode] = {};
-            for (const matchNum in teamData[eventCode]) {
-                const m = teamData[eventCode][matchNum];
-                storageFormat[eventCode][matchNum] = {
-                    'launch to launch': m.launch_to_launch_mean_time,
-                    'launch to intake': m.launch_to_intake_mean_time,
-                    'intake to intake': m.intake_to_intake_mean_time,
-                    'intake to launch': m.intake_to_launch_mean_time,
-                    'artifact stats': m.artifact_stats,
-                    'json': m.raw_events
-                };
-            }
-        }
-        localStorage.setItem(teamNumber, JSON.stringify(storageFormat));
+        overallStats = updatedStats;
     }
 </script>
 

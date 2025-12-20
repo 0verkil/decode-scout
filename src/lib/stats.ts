@@ -4,12 +4,12 @@ import { Event } from "$lib/types"
 // compute: accuracy, total artifacts, base time, start match time, launch -> intake, intake -> intake, intake -> launch, launch -> launch, intake retain %
 export function getMatchStats(events: Event[]) {
     return {
-        "launch to launch": getMeanTimeBetweenEventTypes(events, "launch_artifact", "launch_artifact", ["intake_artifact", "teleop_start"]),
-        "launch to intake": getMeanTimeBetweenEventTypes(events, "launch_artifact", "intake_artifact", ["teleop_start"]),
-        "intake to intake": getMeanTimeBetweenEventTypes(events, "intake_artifact", "intake_artifact", ["launch_artifact", "teleop_start"]),
-        "intake to launch": getMeanTimeBetweenEventTypes(events, "intake_artifact", "launch_artifact", ["teleop_start"]),
-        "artifact stats": getArtifactStats(events),
-        "json": events
+        "launch_to_launch_mean_time": getMeanTimeBetweenEventTypes(events, "launch_artifact", "launch_artifact", ["intake_artifact", "teleop_start"]),
+        "launch_to_intake_mean_time": getMeanTimeBetweenEventTypes(events, "launch_artifact", "intake_artifact", ["teleop_start"]),
+        "intake_to_intake_mean_time": getMeanTimeBetweenEventTypes(events, "intake_artifact", "intake_artifact", ["launch_artifact", "teleop_start"]),
+        "intake_to_launch_mean_time": getMeanTimeBetweenEventTypes(events, "intake_artifact", "launch_artifact", ["teleop_start"]),
+        "artifact_stats": getArtifactStats(events),
+        "raw_events": events
     }
 }
 
