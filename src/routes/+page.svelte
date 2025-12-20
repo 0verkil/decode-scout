@@ -138,7 +138,7 @@
       }
   
       if (eventFn) {
-          logEvent(eventFn(shot)); // Use logEvent for resolution events
+          eventFn(shot);
       }
   
       // Remove from air

@@ -1,823 +1,502 @@
 import { deserializeFromJson } from "./serializer";
-import { getArtifactStats, getMeanTimeBetweenEventTypes } from "./stats";
+import { getArtifactStats, getMatchStats, getMeanTimeBetweenEventTypes } from "./stats";
 
 export const BASE_URL = "/";
 
 // place files you want to import through the `$lib` alias in this folder.
-const m = [
-    {
-        "scored": "false",
-        "type": "miss"
-    },
-    {
-        "timestamp": 1765089834.905,
-        "event": "autonomous_start",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089835.388,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089835.503,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089835.642,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089934.455,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089936.145,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089936.857,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
+const m = {
+    "3805": {
+      "USWAPALT1": {
+        "5": {
+          "launch_to_launch_mean_time": 1.190833330154419,
+          "launch_to_intake_mean_time": -0.22127270698547363,
+          "intake_to_intake_mean_time": 3.3569130379220713,
+          "intake_to_launch_mean_time": 3.5029166539510093,
+          "artifact_stats": [
+            27,
+            30,
+            0.9,
+            30
+          ],
+          "raw_events": [
+            {
+              "timestamp": 1765854001.102,
+              "event": "autonomous_start",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854001.825,
+              "event": "intake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854001.974,
+              "event": "intake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854002.105,
+              "event": "intake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854004.839,
+              "event": "launch_artifact",
+              "data": {
+                "scored": "true",
+                "type": "classified"
+              }
+            },
+            {
+              "timestamp": 1765854006.32,
+              "event": "launch_artifact",
+              "data": {
+                "scored": "true",
+                "type": "classified"
+              }
+            },
+            {
+              "timestamp": 1765854007.486,
+              "event": "launch_artifact",
+              "data": {
+                "scored": "true",
+                "type": "classified"
+              }
+            },
+            {
+              "timestamp": 1765854010.766,
+              "event": "intake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854011.248,
+              "event": "intake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854011.653,
+              "event": "intake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854017.76,
+              "event": "launch_artifact",
+              "data": {
+                "scored": "false",
+                "type": "miss"
+              }
+            },
+            {
+              "timestamp": 1765854018.958,
+              "event": "launch_artifact",
+              "data": {
+                "scored": "true",
+                "type": "classified"
+              }
+            },
+            {
+              "timestamp": 1765854020.107,
+              "event": "launch_artifact",
+              "data": {
+                "scored": "true",
+                "type": "classified"
+              }
+            },
+            {
+              "timestamp": 1765854022.536,
+              "event": "intake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854022.857,
+              "event": "intake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854023.02,
+              "event": "intake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854026.483,
+              "event": "launch_artifact",
+              "data": {
+                "scored": "true",
+                "type": "classified"
+              }
+            },
+            {
+              "timestamp": 1765854027.751,
+              "event": "launch_artifact",
+              "data": {
+                "scored": "true",
+                "type": "classified"
+              }
+            },
+            {
+              "timestamp": 1765854028.83,
+              "event": "launch_artifact",
+              "data": {
+                "scored": "true",
+                "type": "classified"
+              }
+            },
+            {
+              "timestamp": 1765854031.102,
+              "event": "autonomous_end",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854044.434,
+              "event": "intake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854044.7,
+              "event": "intake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854045.685,
+              "event": "intake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854050.03,
+              "event": "launch_artifact",
+              "data": {
+                "scored": "true",
+                "type": "classified"
+              }
+            },
+            {
+              "timestamp": 1765854051.129,
+              "event": "launch_artifact",
+              "data": {
+                "scored": "true",
+                "type": "classified"
+              }
+            },
+            {
+              "timestamp": 1765854052.195,
+              "event": "launch_artifact",
+              "data": {
+                "scored": "true",
+                "type": "classified"
+              }
+            },
+            {
+              "timestamp": 1765854054.492,
+              "event": "intake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854055.193,
+              "event": "intake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854055.826,
+              "event": "intake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854060.853,
+              "event": "launch_artifact",
+              "data": {
+                "scored": "false",
+                "type": "miss"
+              }
+            },
+            {
+              "timestamp": 1765854061.955,
+              "event": "launch_artifact",
+              "data": {
+                "scored": "true",
+                "type": "classified"
+              }
+            },
+            {
+              "timestamp": 1765854063.171,
+              "event": "launch_artifact",
+              "data": {
+                "scored": "true",
+                "type": "classified"
+              }
+            },
+            {
+              "timestamp": 1765854066.266,
+              "event": "intake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854067.914,
+              "event": "unintake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854068.95,
+              "event": "open_gate",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854070.129,
+              "event": "intake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854072.079,
+              "event": "unintake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854072.477,
+              "event": "intake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854072.658,
+              "event": "intake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854074.276,
+              "event": "intake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854075.907,
+              "event": "unintake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854076.24,
+              "event": "intake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854078.774,
+              "event": "launch_artifact",
+              "data": {
+                "scored": "true",
+                "type": "classified"
+              }
+            },
+            {
+              "timestamp": 1765854080.007,
+              "event": "launch_artifact",
+              "data": {
+                "scored": "true",
+                "type": "classified"
+              }
+            },
+            {
+              "timestamp": 1765854081.136,
+              "event": "launch_artifact",
+              "data": {
+                "scored": "true",
+                "type": "classified"
+              }
+            },
+            {
+              "timestamp": 1765854084.665,
+              "event": "intake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854086.4,
+              "event": "intake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854092.548,
+              "event": "launch_artifact",
+              "data": {
+                "scored": "true",
+                "type": "classified"
+              }
+            },
+            {
+              "timestamp": 1765854093.598,
+              "event": "launch_artifact",
+              "data": {
+                "scored": "true",
+                "type": "classified"
+              }
+            },
+            {
+              "timestamp": 1765854093.964,
+              "event": "intake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854094.583,
+              "event": "launch_artifact",
+              "data": {
+                "scored": "true",
+                "type": "classified"
+              }
+            },
+            {
+              "timestamp": 1765854097.901,
+              "event": "intake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854098.452,
+              "event": "intake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854101.386,
+              "event": "intake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854106.039,
+              "event": "launch_artifact",
+              "data": {
+                "scored": "false",
+                "type": "miss"
+              }
+            },
+            {
+              "timestamp": 1765854107.22,
+              "event": "launch_artifact",
+              "data": {
+                "scored": "true",
+                "type": "classified"
+              }
+            },
+            {
+              "timestamp": 1765854108.489,
+              "event": "launch_artifact",
+              "data": {
+                "scored": "true",
+                "type": "classified"
+              }
+            },
+            {
+              "timestamp": 1765854157.602,
+              "event": "intake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854158.07,
+              "event": "launch_artifact",
+              "data": {
+                "scored": "true",
+                "type": "classified"
+              }
+            },
+            {
+              "timestamp": 1765854159.305,
+              "event": "double_base_start",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854159.305,
+              "event": "double_base_end",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854111.726,
+              "event": "intake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854113.327,
+              "event": "intake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854147.466,
+              "event": "intake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854149.164,
+              "event": "intake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854152.117,
+              "event": "launch_artifact",
+              "data": {
+                "scored": "true",
+                "type": "classified"
+              }
+            },
+            {
+              "timestamp": 1765854153.201,
+              "event": "launch_artifact",
+              "data": {
+                "scored": "true",
+                "type": "classified"
+              }
+            },
+            {
+              "timestamp": 1765854153.833,
+              "event": "launch_artifact",
+              "data": {
+                "scored": "true",
+                "type": "classified"
+              }
+            },
+            {
+              "timestamp": 1765854114.712,
+              "event": "intake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854129.136,
+              "event": "unintake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854129.385,
+              "event": "intake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854130.402,
+              "event": "unintake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854135.053,
+              "event": "intake_artifact",
+              "data": {}
+            },
+            {
+              "timestamp": 1765854138.037,
+              "event": "launch_artifact",
+              "data": {
+                "scored": "true",
+                "type": "classified"
+              }
+            },
+            {
+              "timestamp": 1765854140.07,
+              "event": "launch_artifact",
+              "data": {
+                "scored": "true",
+                "type": "classified"
+              }
+            },
+          ]
         }
-    },
-    {
-        "timestamp": 1765089937.329,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089937.928,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089940.694,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089940.959,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089943.741,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089945.332,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "false",
-            "type": "miss"
-        }
-    },
-    {
-        "timestamp": 1765089945.979,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089946.873,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089950.49,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089953.559,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089957.732,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089959.914,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089960.914,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089961.912,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "false",
-            "type": "miss"
-        }
-    },
-    {
-        "timestamp": 1765089964.72,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089965.291,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089966.273,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089967.054,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089967.677,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089977.007,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089977.789,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089978.413,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089981.611,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089986.252,
-        "event": "double_base_start",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089991.736,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "false",
-            "type": "miss"
-        }
-    },
-    {
-        "timestamp": 1765089992.451,
-        "event": "double_base_end",
-        "data": {}
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "timestamp": 1765089968.524,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089972.01,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089973.941,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089974.792,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "timestamp": 1765089836.11,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089836.231,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089836.354,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089839.221,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089839.509,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089840.092,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089843.507,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089844.177,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089844.841,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "false",
-            "type": "miss"
-        }
-    },
-    {
-        "timestamp": 1765089848.56,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089850.272,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089853.136,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089858.72,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089859.322,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089859.847,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "false",
-            "type": "miss"
-        }
-    },
-    {
-        "timestamp": 1765089864.905,
-        "event": "autonomous_end",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089872.412,
-        "event": "teleop_start",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089874.99,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089876.955,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089878.176,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089879.464,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089879.972,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089929.231,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089932.428,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "scored": "false",
-        "type": "miss"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "scored": "false",
-        "type": "miss"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "scored": "false",
-        "type": "miss"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "timestamp": 1765089880.91,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089883.288,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089883.496,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089884.147,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089886.09,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089886.715,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089887.338,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089890.431,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089890.832,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089893.056,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089894.925,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089895.736,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089896.406,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089899.282,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089899.439,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089899.594,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089902.171,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089902.921,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089903.789,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089908.588,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089908.995,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089910.42,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089910.578,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "false",
-            "type": "miss"
-        }
-    },
-    {
-        "timestamp": 1765089912.873,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089913.153,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089914.022,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089915.023,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089915.772,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089916.639,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089922.571,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089923.491,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089924.005,
-        "event": "intake_artifact",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089927.456,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "timestamp": 1765089928.606,
-        "event": "launch_artifact",
-        "data": {
-            "scored": "true",
-            "type": "classified"
-        }
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "timestamp": 1765089972.412,
-        "event": "endgame_start",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089992.412,
-        "event": "endgame_end",
-        "data": {}
-    },
-    {
-        "timestamp": 1765089992.412,
-        "event": "teleop_end",
-        "data": {}
-    },
-    {
-        "scored": "false",
-        "type": "miss"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "scored": "false",
-        "type": "miss"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
-    },
-    {
-        "scored": "true",
-        "type": "classified"
+      }
     }
-]
+  }
 
 export function test() {
-    const events = deserializeFromJson(m);
+    const events = deserializeFromJson(m['3805']['USWAPALT1']['5']["raw_events"]);
     events.sort((a, b) => a.timestamp - b.timestamp);
     console.log(events)
     console.log("launch to launch", getMeanTimeBetweenEventTypes(events, "launch_artifact", "launch_artifact", ["intake_artifact", "teleop_start"]))
     console.log("launch to intake", getMeanTimeBetweenEventTypes(events, "launch_artifact", "intake_artifact", ["teleop_start"]))
     console.log("intake to intake", getMeanTimeBetweenEventTypes(events, "intake_artifact", "intake_artifact", ["launch_artifact", "teleop_start"]))
     console.log("intake to launch", getMeanTimeBetweenEventTypes(events, "intake_artifact", "launch_artifact", ["teleop_start"]))
+    console.log(getMatchStats(events));
 }

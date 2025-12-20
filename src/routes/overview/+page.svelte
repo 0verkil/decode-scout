@@ -1,5 +1,6 @@
 <script lang="ts">
   import DataModal from "$lib/components/DataModal.svelte";
+  import { getMatchStats } from "$lib/stats";
     import { onMount } from "svelte";
     // IMPORT THE NEW MODAL COMPONENT
     // NOTE: Adjust the path above if RawDataModal.svelte is in a different directory relative to +page.svelte
@@ -219,6 +220,64 @@
         modalData = '';
         modalTitle = '';
     }
+
+    // --- 8. RECOMPUTATION LOGIC ---
+    function recomputeAll() {
+        let recomputeCount = 0;
+
+        // Create a deep copy to maintain reactivity properly
+        const newStats = { ...overallStats };
+
+        for (const teamNum in newStats) {
+            for (const eventCode in newStats[teamNum]) {
+                for (const matchNum in newStats[teamNum][eventCode]) {
+                    const match = newStats[teamNum][eventCode][matchNum];
+
+                    if (match.raw_events && match.raw_events.length > 0) {
+                        // 1. Run your provided computation function
+                        const updatedRaw = getMatchStats(match.raw_events);
+
+                        // 2. Map the results back to your internal interface (StatsPayload)
+                        newStats[teamNum][eventCode][matchNum] = {
+                            launch_to_launch_mean_time: parseFloat(updatedRaw['launch to launch'] as any) || 0,
+                            launch_to_intake_mean_time: parseFloat(updatedRaw['launch to intake'] as any) || 0,
+                            intake_to_intake_mean_time: parseFloat(updatedRaw['intake to intake'] as any) || 0,
+                            intake_to_launch_mean_time: parseFloat(updatedRaw['intake to launch'] as any) || 0,
+                            artifact_stats: updatedRaw['artifact stats'] as ArtifactStatsTuple,
+                            raw_events: match.raw_events
+                        };
+                        recomputeCount++;
+                    }
+                }
+            }
+            
+            // 3. Sync this specific team back to LocalStorage
+            saveTeamToLocalStorage(teamNum, newStats[teamNum]);
+        }
+
+        overallStats = newStats;
+        alert(`Recomputed ${recomputeCount} matches using the latest logic.`);
+    }
+
+    function saveTeamToLocalStorage(teamNumber: string, teamData: EventData) {
+        const storageFormat: RawEventData = {};
+
+        for (const eventCode in teamData) {
+            storageFormat[eventCode] = {};
+            for (const matchNum in teamData[eventCode]) {
+                const m = teamData[eventCode][matchNum];
+                storageFormat[eventCode][matchNum] = {
+                    'launch to launch': m.launch_to_launch_mean_time,
+                    'launch to intake': m.launch_to_intake_mean_time,
+                    'intake to intake': m.intake_to_intake_mean_time,
+                    'intake to launch': m.intake_to_launch_mean_time,
+                    'artifact stats': m.artifact_stats,
+                    'json': m.raw_events
+                };
+            }
+        }
+        localStorage.setItem(teamNumber, JSON.stringify(storageFormat));
+    }
 </script>
 
 <main class="min-h-screen w-full bg-zinc-950 text-white font-mono p-6">
@@ -227,6 +286,12 @@
         <header class="pb-6 border-b border-zinc-800 flex justify-between items-center">
             <h1 class="text-4xl font-black text-pink-500">Scouting Data Analysis</h1>
             <div class="flex gap-2">
+                <button 
+                    class="bg-orange-600 hover:bg-orange-500 text-white py-2 px-4 rounded text-sm font-bold transition flex items-center gap-2"
+                    on:click={recomputeAll}
+                >
+                    <span>🔄</span> Recompute Raw
+                </button>
                 <button 
                     class="bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded text-sm font-bold transition"
                     on:click={loadAllStats}
